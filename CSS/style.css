@@ -92,6 +92,19 @@ button[disabled] {
   cursor: default;
   background: #c0c7cf;
 }
+#Ans1{
+    display: none;
+}
+#Ans2{
+    display: none;
+}
+#Ans3{
+    display: none;
+}
+#Ans4{
+    display: none;
+}
+
 
 .float-right {
   float: right;
