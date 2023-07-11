@@ -22,9 +22,24 @@ ans4Btn.addEventListener("click", nextQuestion);
 
 function startQuiz(){
     document.getElementById("start").style.display = "none";
+    countDownClock();
     nextQuestion();
 }
 
+function countDownClock(){
+
+    var countDownTime = new Date().getTime() + 76000;
+
+    var clock = setInterval(function(){
+        
+        var now = new Date().getTime();
+
+        var timeLeft = countDownTime - now;
+
+        document.getElementById("TimerID").innerHTML = Math.floor(timeLeft/1000) + "s";
+
+    }, 1000)
+}
 
 
 function nextQuestion(){
