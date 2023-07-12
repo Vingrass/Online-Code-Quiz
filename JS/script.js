@@ -7,14 +7,17 @@ var ans4Btn = document.querySelector("#Ans4");
 
 var questionNum = 0;
 var questions = ["What does CSS stand for?","What does HTML stand for?", "Which is NOT a data type?", "Array data is contained withing:",
-                 "How do you reference a class in CSS?",    "How do you reference an ID in CSS?",      "What does API stand for?" ] ;
+                 "How do you reference a class in CSS?",    "How do you reference an ID in CSS?",      "What does API stand for?", "End of Quiz"] ;
 
 var ansSetOne =["Cascading Style Sheet",        "Houston Texas Movie Lovers",   "String",   "Brackets []",
                 "-ClassName",                   "-IDname",                      "Application Pass Interference"];
+
 var ansSetTwo =["Cool Sister Sam",              "Hypertext Markup Language",    "Number",   "Parenthesis ()",
                 "#ClassName",                   "#IDname",                      "Access Programming Imitation"];
+
 var ansSetThree =["California Sea Side",        "Hot To My Lips",               "Booling",  "Curly Brackets {}",
                   ">ClassName",                 ">IDname",                      "Application Programming Interface"];
+
 var ansSetFour =["Colossal Submarine Sandwhich", "Hyper Text Moving Language",  "Array",    "Two slices of bread",
                  ".ClassName",                  ".IDname",                      "Apocalyptic PetroDragonic Infinity"];
 
@@ -39,7 +42,7 @@ function startQuiz(){
     document.getElementById("Ans3").style.display = "block";
     document.getElementById("Ans4").style.display = "block";
 
-    countDownTime = new Date().getTime() + 66000;
+    countDownTime = new Date().getTime() + 13000;
     countDownClock();
     nextQuestion(0);
 }
@@ -63,6 +66,10 @@ function countDownClock(){
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function nextQuestion(usrResp){
 
+    if(questionNum === 7){
+        timeOut();
+    }
+
     checkAnswer(usrResp);
 
     document.getElementById("Question").innerHTML = questions[questionNum];
@@ -73,20 +80,29 @@ function nextQuestion(usrResp){
 
     questionNum++
 
-    return
+
 }
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function checkAnswer(usrResp){
     if(usrResp == ansKey[questionNum]){
-        countDownTime += 10000
+        countDownTime += 3000
         usrScore++
+        console.log(usrScore);
     }else{
-        countDownTime -= 10000
+        countDownTime -= 5000
     }
 }
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function timeOut(){
     document.getElementById("TimerID").style.display = "none";
+
+    document.getElementById("Ans1").style.display = "none";
+    document.getElementById("Ans2").style.display = "none";
+    document.getElementById("Ans3").style.display = "none";
+    document.getElementById("Ans4").style.display = "none";
+
+    document.getElementById("scores").innerHTML = "Your score: " + usrScore;
+
 }
