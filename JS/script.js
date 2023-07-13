@@ -3,6 +3,8 @@ var ans1Btn = document.querySelector("#Ans1");
 var ans2Btn = document.querySelector("#Ans2");
 var ans3Btn = document.querySelector("#Ans3");
 var ans4Btn = document.querySelector("#Ans4");
+var highScoreBtn = document.querySelector("#highscorebtn");
+var clearScoreBtn = document.querySelector("#clearscores");
 
 
 var questionNum = 0;
@@ -38,6 +40,9 @@ ans1Btn.addEventListener("click", () => nextQuestion(1));
 ans2Btn.addEventListener("click", () => nextQuestion(2));
 ans3Btn.addEventListener("click", () => nextQuestion(3));
 ans4Btn.addEventListener("click", () => nextQuestion(4));
+
+highScoreBtn.addEventListener("click", showHighScores);
+clearScoreBtn.addEventListener("click", clearScores);
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function startQuiz(){
@@ -135,10 +140,11 @@ function hideButtons(){
 }
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-function getScore(enteredName){
+function getScore(){
 
-    console.log(enteredName.value);
-    usrName = enteredName.value;
+    event.preventDefault();
+
+    usrName = document.getElementById("name").value;
 
     document.getElementById("name").style.display = "none";
 
@@ -148,8 +154,12 @@ function getScore(enteredName){
 
 }
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 function saveScore(usrInfo){
-    var existignScores = JSON.parse(localStorage.getItem("allScores"));
+
+    if(localStorage.getItem("allScores")){
+        var existignScores = JSON.parse(localStorage.getItem("allScores"));
+    }
 
     if(existignScores == null){
         existignScores = [];
@@ -159,7 +169,34 @@ function saveScore(usrInfo){
     existignScores.push(usrInfo);
     localStorage.setItem("allScores", JSON.stringify(existignScores));
 
-    console.log(localStorage.getItem("allScores"));
+}
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+function clearScores(){
+    localStorage.setItem("allScores",[]);
+    console.log("All scores are cleared!")
+    alert("All scores are cleared!")
+}
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+function showHighScores(){
+
+    document.getElementById("highscores").style.display = "block";
+
+    if(localStorage.getItem("allScores")){
+
+    var score = JSON.parse(localStorage.getItem("allScores"));
+
+    }
+
+
+    score.sort((a, b) => b.points - a.points);
+
+    score.forEach(element => {
+        document.getElementById("highscores").innerHTML += "Name: " + element.name + " Score: " + element.points + " Time: " + Math.floor(element.time/1000) + "s <br/>";
+    });
+
+    
+    
 
 }
