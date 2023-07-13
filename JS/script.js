@@ -124,6 +124,8 @@ function showScore(){
     document.getElementById("scores").innerHTML = "Your score: " + usrScore;
     document.getElementById("timeLeft").innerHTML = "Time Remaining: " + Math.floor(timeLeft/1000) + "S";
 
+    showHighScores();
+
 
 
 }
