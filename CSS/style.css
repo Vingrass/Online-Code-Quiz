@@ -112,6 +112,12 @@ button[disabled] {
   text-align: center;
 
 }
+#name{
+  display: none;
+}
+#highscores{
+  display: none;
+}
 
 
 .float-right {

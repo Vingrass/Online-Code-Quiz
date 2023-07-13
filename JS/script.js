@@ -19,14 +19,19 @@ var ansSetThree =["California Sea Side",        "Hot To My Lips",               
                   ">ClassName",                 ">IDname",                      "Application Programming Interface"];
 
 var ansSetFour =["Colossal Submarine Sandwhich", "Hyper Text Moving Language",  "Array",    "Two slices of bread",
-                 ".ClassName",                  ".IDname",                      "Apocalyptic PetroDragonic Infinity"];
+                 ".ClassName",                  ".IDname",                      "Apocalyptic PetroDragonic Inferno"];
 
 var ansKey = [0,1,2,3,1,4,2,3];
-var usrScore = 0;
+var usrScore = -1;
 
 var countDownTime = 0;
 var timeLeft;
 var now;
+var timePaused = false;
+var usrName;
+var usrInfoObj;
+
+
 
 start.addEventListener("click", startQuiz);
 ans1Btn.addEventListener("click", () => nextQuestion(1));
@@ -51,24 +56,22 @@ function startQuiz(){
 function countDownClock(){
     
     setInterval(function(){
-        
-        var now = new Date().getTime();
-        var timeLeft = countDownTime - now;
+        if(!timePaused){
+        now = new Date().getTime();
+        timeLeft = countDownTime - now;
 
         document.getElementById("TimerID").innerHTML = "Time left: " + Math.floor(timeLeft/1000) + "s";
+        }
 
-        if (timeLeft < 0){
-            timeOut()
+        if (timeLeft < 0 ){
+            timeLeft = 0;
+            timeOut();
         }
     }, 1000) 
 }
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function nextQuestion(usrResp){
-
-    if(questionNum === 7){
-        timeOut();
-    }
 
     checkAnswer(usrResp);
 
@@ -79,6 +82,9 @@ function nextQuestion(usrResp){
     document.getElementById("Ans4").innerHTML = ansSetFour[questionNum];
 
     questionNum++
+    if(questionNum === 8){
+        timeOut();
+    }
 
 
 }
@@ -88,7 +94,6 @@ function checkAnswer(usrResp){
     if(usrResp == ansKey[questionNum]){
         countDownTime += 3000
         usrScore++
-        console.log(usrScore);
     }else{
         countDownTime -= 5000
     }
@@ -96,13 +101,65 @@ function checkAnswer(usrResp){
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 function timeOut(){
+
+    timePaused = true;
+
     document.getElementById("TimerID").style.display = "none";
 
+    hideButtons();
+    showScore();
+
+}
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+function showScore(){
+
+    hideButtons();
+    document.getElementById("name").style.display = "inline";
+    document.getElementById("scores").innerHTML = "Your score: " + usrScore;
+    document.getElementById("timeLeft").innerHTML = "Time Remaining: " + Math.floor(timeLeft/1000) + "S";
+
+
+
+}
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+function hideButtons(){
+
+    document.getElementById("start").style.display = "none";
     document.getElementById("Ans1").style.display = "none";
     document.getElementById("Ans2").style.display = "none";
     document.getElementById("Ans3").style.display = "none";
     document.getElementById("Ans4").style.display = "none";
 
-    document.getElementById("scores").innerHTML = "Your score: " + usrScore;
+}
+
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+function getScore(enteredName){
+
+    console.log(enteredName.value);
+    usrName = enteredName.value;
+
+    document.getElementById("name").style.display = "none";
+
+    usrInfoObj = {name: usrName, time: timeLeft, points: usrScore };
+
+    saveScore(usrInfoObj);
+
+}
+//=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+function saveScore(usrInfo){
+    var existignScores = JSON.parse(localStorage.getItem("allScores"));
+
+    if(existignScores == null){
+        existignScores = [];
+    }
+
+    localStorage.setItem("score", JSON.stringify(usrInfo));
+    existignScores.push(usrInfo);
+    localStorage.setItem("allScores", JSON.stringify(existignScores));
+
+    console.log(localStorage.getItem("allScores"));
+
 
 }
